@@ -72,6 +72,7 @@ stream = ExtResource( 3 )
 autostart = true
 
 [node name="Sprite" type="Sprite" parent="."]
+editor/display_folded = true
 position = Vector2( 90, 136 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 4 )
@@ -79,6 +80,8 @@ texture = ExtResource( 4 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "default"
 anims/default = SubResource( 1 )
+
+[node name="Loops" type="Node" parent="."]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="first_press_timer" to="." method="_on_first_press_timer_timeout"]
 [connection signal="timeout" from="sound_event_timer" to="." method="_on_sound_event_timer_timeout"]

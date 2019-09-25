@@ -1,5 +1,5 @@
 extends Node2D
-#
+
 var time_elapsed = 0
 var button_presses = 0
 var bpm = 0
