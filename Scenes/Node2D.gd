@@ -11,6 +11,7 @@ var counter = 0
 var blacklist = []
 
 func _ready():
+	var FourFourAudio = $LoopsAt60BPM/FourFour
 	pass 
 	
 func _process(delta):
@@ -49,12 +50,30 @@ func _on_first_press_timer_timeout():
 	print("RESET!")
 
 func _on_sound_event_timer_timeout():
-#	
 	$sound_event_timer.wait_time = float(bpm)/(60*60)
 
 func play_sound():
 	$AudioStreamPlayer.play()
 	
 #### Requires a recorded stream set at 60bpm
-func play_audiostream_at_given_bpm(audiostreamStr,target_bpm):
+func play_audiostream_at_given_bpm(audiostreamNode,target_bpm):
+	# calculate pitch shift required (warp)
+	var warp_required = 1
+	var stretch_relative_to_60_bpm = float(target_bpm)/60
+	warp_required = stretch_relative_to_60_bpm
+	# shift pitch (warp)
+	audiostreamNode.pitch_shift= warp_required
+	# calculate compensation in octaves
+	var pitch_compensation = 1
+	# Hopefully the same? If speed doubles, octaves lowers
+	# sadly pitch shift goes from 0 (-1 oct) to 16 (+16 oct)
+	pitch_compensation = float(1)/warp_required
+	# define compensation bus
+	var compensation_bus = AudioServer.get_bus_index("PComp")
+	# add audioNode to the bus
+	audiostreamNode.bus=compensation_bus
+	# compensate with pitch shift effect on the bus
+	compensation_bus.pitch_scale=pitch_compensation
+	# play
+	audiostreamNode.play()
 	pass
