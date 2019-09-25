@@ -11,8 +11,8 @@ var counter = 0
 var blacklist = []
 
 func _ready():
-	var FourFourAudio = $LoopsAt60BPM/FourFour
-	pass 
+	var Loop_4_4 = $LoopsAt60BPM/FourFour
+	Loop_4_4.play() 
 	
 func _process(delta):
 	time_elapsed += delta
@@ -56,7 +56,7 @@ func play_sound():
 	$AudioStreamPlayer.play()
 	
 #### Requires a recorded stream set at 60bpm
-func play_audiostream_at_given_bpm(audiostreamNode,target_bpm):
+func morph_audiostream_to_given_bpm(audiostreamNode,target_bpm):
 	# calculate pitch shift required (warp)
 	var warp_required = 1
 	var stretch_relative_to_60_bpm = float(target_bpm)/60
@@ -74,6 +74,4 @@ func play_audiostream_at_given_bpm(audiostreamNode,target_bpm):
 	audiostreamNode.bus=compensation_bus
 	# compensate with pitch shift effect on the bus
 	compensation_bus.pitch_scale=pitch_compensation
-	# play
-	audiostreamNode.play()
 	pass
