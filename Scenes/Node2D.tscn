@@ -25,7 +25,7 @@ tracks/1/path = NodePath("..")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -69,10 +69,8 @@ one_shot = true
 stream = ExtResource( 3 )
 
 [node name="sound_event_timer" type="Timer" parent="."]
-autostart = true
 
 [node name="Sprite" type="Sprite" parent="."]
-editor/display_folded = true
 position = Vector2( 90, 136 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 4 )
