@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Node2D.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/main.png" type="Texture" id=2]
 [ext_resource path="res://Sound/click1.wav" type="AudioStream" id=3]
 [ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Sound/Master60BPM.wav" type="AudioStream" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "default"
@@ -82,6 +83,7 @@ anims/default = SubResource( 1 )
 [node name="LoopsAt60BPM" type="Node" parent="."]
 
 [node name="FourFour" type="AudioStreamPlayer" parent="LoopsAt60BPM"]
+stream = ExtResource( 5 )
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="first_press_timer" to="." method="_on_first_press_timer_timeout"]
 [connection signal="timeout" from="sound_event_timer" to="." method="_on_sound_event_timer_timeout"]
