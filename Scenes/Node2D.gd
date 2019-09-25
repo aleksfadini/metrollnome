@@ -48,6 +48,8 @@ func _on_Button_pressed():
 		get_node("Sprite/AnimationPlayer").playback_speed = (bpm/120)
 		$bpm.text = "BPM: " + str(bpm)
 		morph_audiostream_to_given_bpm(Loop_4_4,bpm)
+#		Loop_4_4.play() 
+		
 
 func _on_first_press_timer_timeout():
 	first_press = true

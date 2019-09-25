@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Master60BPM.wav-eb101529e54061456778896c75d7c747.sample"
+path="res://.import/Master60BPMOLD.wav-63406f3d2cd9135e2c05f3d137f97e13.sample"
 
 [deps]
 
-source_file="res://Sound/Master60BPM.wav"
-dest_files=[ "res://.import/Master60BPM.wav-eb101529e54061456778896c75d7c747.sample" ]
+source_file="res://Sound/Master60BPMOLD.wav"
+dest_files=[ "res://.import/Master60BPMOLD.wav-63406f3d2cd9135e2c05f3d137f97e13.sample" ]
 
 [params]
 
