@@ -54,3 +54,7 @@ func _on_sound_event_timer_timeout():
 
 func play_sound():
 	$AudioStreamPlayer.play()
+	
+#### Requires a recorded stream set at 60bpm
+func play_audiostream_at_given_bpm(audiostreamStr,target_bpm):
+	pass
