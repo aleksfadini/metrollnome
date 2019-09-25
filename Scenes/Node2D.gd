@@ -14,7 +14,8 @@ var blacklist = []
 var Loop_4_4
 
 func _ready():
-	Loop_4_4 = $LoopsAt60BPM/FourFour
+#	Loop_4_4 = $LopsAt60BPM/FourFour
+	Loop_4_4 = $AudioStreamPlayer
 	Loop_4_4.play() 
 	
 func _process(delta):
@@ -23,7 +24,7 @@ func _process(delta):
 	
 	while counter >= 0.005 and false:
 		counter -= 0.005
-#		$AudioStreamPlayer.play()
+		$AudioStreamPlayer.play()
 	
 	check_thresholds()
 	
@@ -84,3 +85,7 @@ func morph_audiostream_to_given_bpm(audiostreamNode,target_bpm):
 #	effect.pan = 0.63
 	pitch_effect.pitch_scale=pitch_compensation
 	pass
+
+func _on_AudioStreamPlayer_finished():
+	$AudioStreamPlayer.play()
+	pass # Replace with function body.
