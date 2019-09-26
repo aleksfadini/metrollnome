@@ -24,8 +24,14 @@ func _ready():
 	FirstBeat = $FirstBeat
 	OtherBeat = $OtherBeat
 	# Connect Functions for Beats
-	connect("finished",FirstBeat,"on_each_beat_finished")
-	connect("finished",OtherBeat,"on_each_beat_finished")
+	FirstBeat.connect("finished",self,"_on_each_beat_finished")
+#	FirstBeat.connect("finished",self,"_on_each_beat_finished")
+	OtherBeat.connect("finished",self,"_on_each_beat_finished")
+#	OtherBeat.connect("finished",self,"_on_each_beat_finished")
+#	OtherBeat.connect("finished",OtherBeat,"_on_each_beat_finished")
+#	connect("_on_each_beat_finished",OtherBeat,"finished")
+	FirstBeat.play()
+
 	
 func _process(delta):
 	time_elapsed += delta
@@ -60,6 +66,7 @@ func _on_Button_pressed():
 		morph_beat_loop_to_given_bpm(FirstBeat,bpm)
 		# morph beat 2
 		morph_beat_loop_to_given_bpm(OtherBeat,bpm)
+#		FirstBeat.play()
 		
 #		Loop_4_4.play() 
 		
@@ -75,11 +82,11 @@ func _on_first_press_timer_timeout():
 #	$AudioStreamPlayer.play()
 	
 #### Requires a recorded stream set at 60bpm
-func morph_audiostream_to_given_bpm(audiostreamNode,target_bpm):
+func morph_beat_loop_to_given_bpm(audiostreamNode,target_bpm):
 	# calculate pitch shift required (warp)
 	var warp_required = 1
-	var stretch_relative_to_60_bpm = float(target_bpm)/60
-	warp_required = stretch_relative_to_60_bpm
+	var stretch_relative_to_120_bpm = float(target_bpm)/120
+	warp_required = stretch_relative_to_120_bpm
 	# shift pitch (warp)
 	audiostreamNode.pitch_scale = warp_required
 	# calculate compensation in octaves
@@ -94,13 +101,8 @@ func morph_audiostream_to_given_bpm(audiostreamNode,target_bpm):
 	# compensate with pitch shift effect on the bus
 #	AudioServer.set_pitch_scale(compensation_bus, pitch_compensation)
 	var pitch_effect = AudioServer.get_bus_effect(1, 0)
-#	effect.pan = 0.63
 	pitch_effect.pitch_scale=pitch_compensation
 	pass
-
-func _on_AudioStreamPlayer_finished():
-	$AudioStreamPlayer.play()
-	pass # Replace with function body.
 	
 # This function keeps triggering one beat after 
 # the other.
@@ -109,8 +111,10 @@ func _on_each_beat_finished():
 	reset_beat_counter_each_bar()
 	if beat_counter == 0:
 		#play beat 1
+		FirstBeat.play()
 		pass
 	else:
+		OtherBeat.play()
 		#play beat non-1 (different sound)
 		pass
 		

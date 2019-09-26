@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Node2D.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/main.png" type="Texture" id=2]
-[ext_resource path="res://Sound/4-4-60BPM.ogg" type="AudioStream" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Sound/FB-120BPM-2.wav" type="AudioStream" id=3]
+[ext_resource path="res://Sound/OB-120BPM-2.wav" type="AudioStream" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "default"
@@ -69,14 +70,14 @@ one_shot = true
 stream = ExtResource( 3 )
 
 [node name="OtherBeat" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 3 )
+stream = ExtResource( 4 )
 
 [node name="sound_event_timer" type="Timer" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 90, 136 )
 scale = Vector2( 0.2, 0.2 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "default"
@@ -87,5 +88,4 @@ anims/default = SubResource( 1 )
 [node name="FourFour" type="AudioStreamPlayer" parent="LoopsAt60BPM"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="first_press_timer" to="." method="_on_first_press_timer_timeout"]
-[connection signal="finished" from="OtherBeat" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="sound_event_timer" to="." method="_on_sound_event_timer_timeout"]
