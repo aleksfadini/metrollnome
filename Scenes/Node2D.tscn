@@ -65,7 +65,10 @@ valign = 1
 wait_time = 5.0
 one_shot = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="FirstBeat" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="OtherBeat" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
 [node name="sound_event_timer" type="Timer" parent="."]
@@ -84,5 +87,5 @@ anims/default = SubResource( 1 )
 [node name="FourFour" type="AudioStreamPlayer" parent="LoopsAt60BPM"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="first_press_timer" to="." method="_on_first_press_timer_timeout"]
-[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
+[connection signal="finished" from="OtherBeat" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="sound_event_timer" to="." method="_on_sound_event_timer_timeout"]

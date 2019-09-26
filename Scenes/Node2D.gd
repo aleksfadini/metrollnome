@@ -5,18 +5,27 @@ var button_presses = 0
 var bpm = 0
 
 var first_press = true
-
 var counter = 0
+
+# Bar and beat counters
+var bar_counter = 0
+var beat_counter = 0
+var beats_per_bar = 4
+
 
 var blacklist = []
 
 #Loops
-var Loop_4_4
+var FirstBeat
+var OtherBeat
 
 func _ready():
 #	Loop_4_4 = $LopsAt60BPM/FourFour
-	Loop_4_4 = $AudioStreamPlayer
-	Loop_4_4.play() 
+	FirstBeat = $FirstBeat
+	OtherBeat = $OtherBeat
+	# Connect Functions for Beats
+	connect("finished",FirstBeat,"on_each_beat_finished")
+	connect("finished",OtherBeat,"on_each_beat_finished")
 	
 func _process(delta):
 	time_elapsed += delta
@@ -25,30 +34,33 @@ func _process(delta):
 	while counter >= 0.005 and false:
 		counter -= 0.005
 		$AudioStreamPlayer.play()
-	
+	# this is a way to add random events
 	check_thresholds()
-	
+
+# Insert random events here
 func check_thresholds():
 	if counter > 5 and not(5 in blacklist):
 		blacklist.append(5)
 		print("HI:D")
 	
+# detect bpm on button pressed
 func _on_Button_pressed():
-	
 	$first_press_timer.start()
-	
 	if first_press:
 		button_presses = 0
 		time_elapsed = 0
 		first_press = false
 		$bpm.text = "BPM: 0"
-		
 	button_presses += 1
 	if button_presses > 3:
 		bpm = 60*button_presses/time_elapsed
 		get_node("Sprite/AnimationPlayer").playback_speed = (bpm/120)
 		$bpm.text = "BPM: " + str(bpm)
-		morph_audiostream_to_given_bpm(Loop_4_4,bpm)
+		# morph beat 1
+		morph_beat_loop_to_given_bpm(FirstBeat,bpm)
+		# morph beat 2
+		morph_beat_loop_to_given_bpm(OtherBeat,bpm)
+		
 #		Loop_4_4.play() 
 		
 
@@ -89,3 +101,21 @@ func morph_audiostream_to_given_bpm(audiostreamNode,target_bpm):
 func _on_AudioStreamPlayer_finished():
 	$AudioStreamPlayer.play()
 	pass # Replace with function body.
+	
+# This function keeps triggering one beat after 
+# the other.
+func _on_each_beat_finished():
+	beat_counter+=1
+	reset_beat_counter_each_bar()
+	if beat_counter == 0:
+		#play beat 1
+		pass
+	else:
+		#play beat non-1 (different sound)
+		pass
+		
+func reset_beat_counter_each_bar():
+	if beat_counter <= beats_per_bar:
+		return
+	else:
+		beat_counter = 0
