@@ -19,6 +19,10 @@ var blacklist = []
 var max_latency_buffer = 1000 # in ms (should be added before each sound)
 var look_ahead = 50 # in ms
 var beat_already_played = false
+# this is a temp var that keeps track of when 
+# the last beat was detected, used as a flag to avoid repeating
+# the same beat
+var last_beat_buffer_delay = 0
 
 func _ready():
 	$bpm.text = bpm
@@ -26,6 +30,8 @@ func _ready():
 #	Loop_4_4 = $LopsAt60BPM/FourFour
 	FirstBeat = $FirstBeat
 	OtherBeat = $OtherBeat
+	# initialize buffer system
+	last_beat_buffer_delay = look_ahead
 	# Connect Functions for Beats
 #	FirstBeat.connect("finished",self,"_on_each_beat_finished")
 #	FirstBeat.connect("finished",self,"_on_each_beat_finished")
@@ -42,6 +48,7 @@ func _ready():
 
 	
 func _process(delta):
+	# These two are needed to detect BPM
 	time_elapsed += delta
 	counter += delta
 #
@@ -58,10 +65,19 @@ func check_timeline():
 	# find how close this frame is to the next beat
 	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
 	print("GT: ",ms_from_beat)
+	# check if beat has already been played
+	if ms_from_beat <= last_beat_buffer_delay:
+		beat_already_played = true
+	else:
+		beat_already_played = false
+		last_beat_buffer_delay = look_ahead
 	# if closer than look_ahead and not already played, play with delay
 	if ms_from_beat <= look_ahead and not beat_already_played:
 		beat_already_played = true
 		play_with_delay(ms_from_beat)
+		#set the buffer delayed to use as reference
+		last_beat_buffer_delay = ms_from_beat
+		print("last_beat_buffer_delay: ", last_beat_buffer_delay) 
 		pass
     # do something every 300ms
 	pass
@@ -138,7 +154,6 @@ func play_with_delay(delay):
 	else:
 		#play beat non-1 (different sound)
 		OtherBeat.play(1-delay_in_secs)
-		pass
 
 		
 func reset_beat_counter_each_bar():
@@ -146,6 +161,9 @@ func reset_beat_counter_each_bar():
 		return
 	else:
 		beat_counter = 0
+		bar_counter += 1
+	print("bar: ", bar_counter)
+	print("beat: ", beat_counter)
 
 
 ## found this online
@@ -156,7 +174,7 @@ func reset_beat_counter_each_bar():
 #			pass
 
 # calculates the length of a beat in ms
-# for a certain bpm
+# given a certain bpm
 func bpm_to_beat_in_ms(any_bpm):
 	var beat_in_ms = float(60000)/any_bpm
 	return beat_in_ms
