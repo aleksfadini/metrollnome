@@ -20,18 +20,23 @@ var FirstBeat
 var OtherBeat
 
 func _ready():
-	set_physics_process_internal(true)
+#	set_physics_process_internal(true)
 #	Loop_4_4 = $LopsAt60BPM/FourFour
 	FirstBeat = $FirstBeat
 	OtherBeat = $OtherBeat
 	# Connect Functions for Beats
-	FirstBeat.connect("finished",self,"_on_each_beat_finished")
 #	FirstBeat.connect("finished",self,"_on_each_beat_finished")
-	OtherBeat.connect("finished",self,"_on_each_beat_finished")
+#	FirstBeat.connect("finished",self,"_on_each_beat_finished")
+#	OtherBeat.connect("finished",self,"_on_each_beat_finished")
 #	OtherBeat.connect("finished",self,"_on_each_beat_finished")
 #	OtherBeat.connect("finished",OtherBeat,"_on_each_beat_finished")
 #	connect("_on_each_beat_finished",OtherBeat,"finished")
-	FirstBeat.play()
+	var timeline_file = load('res://audio/A0.ogg')
+	$Timeline.set_volume_db(-80)
+	$Timeline.set_stream(timeline_file)
+	audiostream.set_loop(true)
+	$Timeline.play(0)
+
 
 	
 func _process(delta):
