@@ -2,7 +2,7 @@ extends Node2D
 
 var time_elapsed = 0
 var button_presses = 0
-var bpm = 0
+var bpm = 120
 
 var first_press = true
 var counter = 0
@@ -20,6 +20,7 @@ var FirstBeat
 var OtherBeat
 
 func _ready():
+	set_physics_process_internal(true)
 #	Loop_4_4 = $LopsAt60BPM/FourFour
 	FirstBeat = $FirstBeat
 	OtherBeat = $OtherBeat
@@ -99,7 +100,7 @@ func morph_beat_loop_to_given_bpm(audiostreamNode,target_bpm):
 	# add audioNode to the bus
 	audiostreamNode.bus="PComp"
 	# compensate with pitch shift effect on the bus
-#	AudioServer.set_pitch_scale(compensation_bus, pitch_compensation)
+#	#AudioServer.set_pitch_scale(compensation_bus, pitch_compensation)
 	var pitch_effect = AudioServer.get_bus_effect(1, 0)
 	pitch_effect.pitch_scale=pitch_compensation
 	pass
@@ -109,6 +110,8 @@ func morph_beat_loop_to_given_bpm(audiostreamNode,target_bpm):
 func _on_each_beat_finished():
 	beat_counter+=1
 	reset_beat_counter_each_bar()
+#	beat_counter= 300
+#	if beat_counter == 9999999:
 	if beat_counter == 0:
 		#play beat 1
 		FirstBeat.play()
@@ -119,7 +122,15 @@ func _on_each_beat_finished():
 		pass
 		
 func reset_beat_counter_each_bar():
-	if beat_counter <= beats_per_bar:
+	if beat_counter < beats_per_bar:
 		return
 	else:
 		beat_counter = 0
+
+
+# found this online
+func _notification(what):
+    match what:
+        NOTIFICATION_INTERNAL_PHYSICS_PROCESS:
+            # update code here
+			pass
