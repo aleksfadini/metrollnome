@@ -64,10 +64,11 @@ func check_timeline():
 	var beat_in_ms = bpm_to_beat_in_ms(bpm)
 	# find how close this frame is to the next beat
 	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
-	print("GT: ",ms_from_beat)
+#	print("GT: ",ms_from_beat)
 	# check if beat has already been played
 	if ms_from_beat <= last_beat_buffer_delay:
-		beat_already_played = true
+#		beat_already_played = true
+		pass
 	else:
 		beat_already_played = false
 		last_beat_buffer_delay = look_ahead
@@ -157,13 +158,14 @@ func play_with_delay(delay):
 
 		
 func reset_beat_counter_each_bar():
+	print("bar: ", bar_counter)
+	print("beat: ", beat_counter)
 	if beat_counter < beats_per_bar:
 		return
 	else:
 		beat_counter = 0
 		bar_counter += 1
-	print("bar: ", bar_counter)
-	print("beat: ", beat_counter)
+
 
 
 ## found this online
