@@ -25,7 +25,7 @@ var beat_already_played = false
 var last_beat_buffer_delay = 0
 
 func _ready():
-	$bpm.text = bpm
+	$bpm.text = str(bpm)
 #	set_physics_process_internal(true)
 #	Loop_4_4 = $LopsAt60BPM/FourFour
 	FirstBeat = $FirstBeat
@@ -72,7 +72,7 @@ func check_timeline():
 		beat_already_played = false
 		last_beat_buffer_delay = look_ahead
 	# if closer than look_ahead and not already played, play with delay
-	if ms_from_beat <= look_ahead and not beat_already_played:
+	if ms_from_beat < look_ahead and not beat_already_played:
 		beat_already_played = true
 		play_with_delay(ms_from_beat)
 		#set the buffer delayed to use as reference
@@ -177,4 +177,4 @@ func reset_beat_counter_each_bar():
 # given a certain bpm
 func bpm_to_beat_in_ms(any_bpm):
 	var beat_in_ms = float(60000)/any_bpm
-	return beat_in_ms
+	return int(beat_in_ms)
