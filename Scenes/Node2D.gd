@@ -1,25 +1,27 @@
 extends Node2D
 
+# Tap Tempo System
 var time_elapsed = 0
 var button_presses = 0
 var bpm = 120
-
 var first_press = true
 var counter = 0
-
 # Bar and beat counters
 var bar_counter = 0
 var beat_counter = 0
 var beats_per_bar = 4
-
-
-var blacklist = []
-
 #Loops
 var FirstBeat
 var OtherBeat
+# Events
+var blacklist = []
+# Latency System
+var max_latency_buffer = 1000 # in ms (should be added before each sound)
+var look_ahead = 50 # in ms
+var beat_already_played = false
 
 func _ready():
+	$bpm.text = bpm
 #	set_physics_process_internal(true)
 #	Loop_4_4 = $LopsAt60BPM/FourFour
 	FirstBeat = $FirstBeat
@@ -31,24 +33,38 @@ func _ready():
 #	OtherBeat.connect("finished",self,"_on_each_beat_finished")
 #	OtherBeat.connect("finished",OtherBeat,"_on_each_beat_finished")
 #	connect("_on_each_beat_finished",OtherBeat,"finished")
-	var timeline_file = load('res://audio/A0.ogg')
-	$Timeline.set_volume_db(-80)
-	$Timeline.set_stream(timeline_file)
-	audiostream.set_loop(true)
-	$Timeline.play(0)
+#	var timeline_file = load('res://audio/A0.ogg')
+#	$Timeline.set_volume_db(-80)
+#	$Timeline.set_stream(timeline_file)
+#	audiostream.set_loop(true)
+#	$Timeline.play(0)
 
 
 	
 func _process(delta):
 	time_elapsed += delta
 	counter += delta
-	
-	while counter >= 0.005 and false:
-		counter -= 0.005
-		$AudioStreamPlayer.play()
+#
+#	while counter >= 0.005 and false:
+#		counter -= 0.005
+#		$AudioStreamPlayer.play()
+	check_timeline()
 	# this is a way to add random events
 	check_thresholds()
 
+func check_timeline():
+	# find beat in ms (should be moved to where the bpm is updated)
+	var beat_in_ms = bpm_to_beat_in_ms(bpm)
+	# find how close this frame is to the next beat
+	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
+	print("GT: ",ms_from_beat)
+	# if closer than look_ahead and not already played, play with delay
+	if ms_from_beat <= look_ahead and not beat_already_played:
+		beat_already_played = true
+		play_with_delay(ms_from_beat)
+		pass
+    # do something every 300ms
+	pass
 # Insert random events here
 func check_thresholds():
 	if counter > 5 and not(5 in blacklist):
@@ -69,9 +85,9 @@ func _on_Button_pressed():
 		get_node("Sprite/AnimationPlayer").playback_speed = (bpm/120)
 		$bpm.text = "BPM: " + str(bpm)
 		# morph beat 1
-		morph_beat_loop_to_given_bpm(FirstBeat,bpm)
+#		morph_beat_loop_to_given_bpm(FirstBeat,bpm)
 		# morph beat 2
-		morph_beat_loop_to_given_bpm(OtherBeat,bpm)
+#		morph_beat_loop_to_given_bpm(OtherBeat,bpm)
 #		FirstBeat.play()
 		
 #		Loop_4_4.play() 
@@ -112,19 +128,18 @@ func morph_beat_loop_to_given_bpm(audiostreamNode,target_bpm):
 	
 # This function keeps triggering one beat after 
 # the other.
-func _on_each_beat_finished():
+func play_with_delay(delay):
+	var delay_in_secs=float(delay)/1000
 	beat_counter+=1
 	reset_beat_counter_each_bar()
-#	beat_counter= 300
-#	if beat_counter == 9999999:
 	if beat_counter == 0:
 		#play beat 1
-		FirstBeat.play()
-		pass
+		FirstBeat.play(1-delay_in_secs)
 	else:
-		OtherBeat.play()
 		#play beat non-1 (different sound)
+		OtherBeat.play(1-delay_in_secs)
 		pass
+
 		
 func reset_beat_counter_each_bar():
 	if beat_counter < beats_per_bar:
@@ -133,9 +148,15 @@ func reset_beat_counter_each_bar():
 		beat_counter = 0
 
 
-# found this online
-func _notification(what):
-    match what:
-        NOTIFICATION_INTERNAL_PHYSICS_PROCESS:
-            # update code here
-			pass
+## found this online
+#func _notification(what):
+#    match what:
+#        NOTIFICATION_INTERNAL_PHYSICS_PROCESS:
+#            # update code here
+#			pass
+
+# calculates the length of a beat in ms
+# for a certain bpm
+func bpm_to_beat_in_ms(any_bpm):
+	var beat_in_ms = float(60000)/any_bpm
+	return beat_in_ms
