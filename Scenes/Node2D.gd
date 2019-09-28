@@ -136,6 +136,15 @@ func bpm_to_beat_in_ms(any_bpm):
 	print ("calc - bpm: ", any_bpm, "to ms: ", int(beat_in_ms))
 	return int(beat_in_ms)
 	
+## temptative workaround
+func PlaySound_Node(var stype, var node, var volume = 1.0):
+    assert (node != null)
+    var player = AudioStreamPlayer.new()
+    node.add_child(player)
+    player.stream = StreamFromSType(stype)
+    player.set_max_db(-60 + (volume * 60.0))
+    player.connect("finished", player, "queue_free")
+    player.play()
 
 #################################################33333
 ############### EFFECTS SECTION
