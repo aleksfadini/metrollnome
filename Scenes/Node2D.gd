@@ -50,8 +50,8 @@ func _process(delta):
 func check_timeline():
 	# find how close this frame is to the next beat
 #	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
-	var ms_from_beat = (OS.get_ticks_msec()% beat_in_ms)
-#	print("GT: ",ms_from_beat)
+	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
+	print("GT: ",ms_from_beat)
 	# check if beat has already been played
 	if ms_from_beat <= last_beat_buffer_delay:
 #		beat_already_played = true
@@ -140,7 +140,7 @@ func reset_beat_counter_each_bar():
 # calculates the length of a beat in ms
 # given a certain bpm
 func bpm_to_beat_in_ms(any_bpm):
-	var beat_in_ms = float(6000)/any_bpm
+	var beat_in_ms = float(60000)/any_bpm
 	print ("calc - bpm: ", any_bpm, "to ms: ", beat_in_ms)
 	return int(beat_in_ms)
 	
