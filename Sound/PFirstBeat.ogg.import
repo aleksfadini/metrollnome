@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/PFirstBeat.ogg-89ff02c2f0f3e8283f75af78edde31b0.oggstr"
+
+[deps]
+
+source_file="res://Sound/PFirstBeat.ogg"
+dest_files=[ "res://.import/PFirstBeat.ogg-89ff02c2f0f3e8283f75af78edde31b0.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

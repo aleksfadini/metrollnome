@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/POtherBeat.ogg-97ce59d03071e8f27efc680577ecc21c.oggstr"
+
+[deps]
+
+source_file="res://Sound/POtherBeat.ogg"
+dest_files=[ "res://.import/POtherBeat.ogg-97ce59d03071e8f27efc680577ecc21c.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
