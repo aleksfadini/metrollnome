@@ -5,7 +5,7 @@ var debug_mode = true
 # Tap Tempo System
 var time_elapsed = 0
 var button_presses = 0
-var bpm = 120
+var bpm = 350
 var first_press = true
 var counter = 0
 var beat_in_ms = 0
@@ -104,8 +104,10 @@ func _on_first_press_timer_timeout():
 func play_with_delay(delay):
 	# note: this division introduces an error. check float/integers
 	var delay_in_secs=float(delay)/1000
-	print ("playing with delay: ", delay_in_secs)
 	beat_counter+=1
+	# testing: removing delay
+#	delay_in_secs = 0
+	print ("playing with delay: ", delay_in_secs)
 	reset_beat_counter_each_bar()
 	if beat_counter == 0:
 		#play beat 1
