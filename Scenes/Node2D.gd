@@ -147,6 +147,7 @@ func morph_beat_loop_to_given_bpm(audiostreamNode,target_bpm):
 # the other.
 func play_with_delay(delay):
 	var delay_in_secs=float(delay)/1000
+	print ("playing with delay: ", delay_in_secs)
 	beat_counter+=1
 	reset_beat_counter_each_bar()
 	if beat_counter == 0:
@@ -158,8 +159,8 @@ func play_with_delay(delay):
 
 		
 func reset_beat_counter_each_bar():
-	print("bar: ", bar_counter)
-	print("beat: ", beat_counter)
+	print("Bar/Beat: ", bar_counter, " / ", beat_counter)
+#	print("beat: ", beat_counter)
 	if beat_counter < beats_per_bar:
 		return
 	else:
@@ -178,5 +179,6 @@ func reset_beat_counter_each_bar():
 # calculates the length of a beat in ms
 # given a certain bpm
 func bpm_to_beat_in_ms(any_bpm):
-	var beat_in_ms = float(60000)/any_bpm
+	var beat_in_ms = float(6000)/any_bpm
+	print ("calc - bpm: ", any_bpm, "to ms: ", beat_in_ms)
 	return int(beat_in_ms)
