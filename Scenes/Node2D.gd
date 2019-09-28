@@ -18,7 +18,7 @@ var OtherBeat
 var blacklist = []
 # Latency System
 var max_latency_buffer = 1000 # in ms (should be added before each sound)
-var look_ahead = 30 # in ms
+var look_ahead = 80 # in ms
 var beat_already_played = false
 # this is a temp var that keeps track of when 
 # the last beat was detected, used as a flag to avoid repeating
@@ -77,7 +77,7 @@ func _on_Button_pressed():
 		$bpm.text = "BPM: 0"
 	button_presses += 1
 	if button_presses > 3:
-		bpm = 60*button_presses/time_elapsed
+		bpm = int(60*button_presses/time_elapsed)
 		get_node("Sprite/AnimationPlayer").playback_speed = (bpm/120)
 		$bpm.text = "BPM: " + str(bpm)
 		# find beat in ms (should be moved to where the bpm is updated)
@@ -133,7 +133,7 @@ func reset_beat_counter_each_bar():
 # given a certain bpm
 func bpm_to_beat_in_ms(any_bpm):
 	var beat_in_ms = float(60000)/any_bpm
-	print ("calc - bpm: ", any_bpm, "to ms: ", beat_in_ms)
+	print ("calc - bpm: ", any_bpm, "to ms: ", int(beat_in_ms))
 	return int(beat_in_ms)
 	
 
