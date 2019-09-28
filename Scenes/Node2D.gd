@@ -53,6 +53,8 @@ func check_timeline():
 	# find how close this frame is to the next beat
 #	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
 	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
+	## Try to add audiostrea latency with 
+	# AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
 #	print("GT: ",ms_from_beat)
 	# check if beat has already been played
 	if ms_from_beat <= last_beat_buffer_delay:
