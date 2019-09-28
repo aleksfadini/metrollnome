@@ -75,6 +75,7 @@ stream = SubResource( 1 )
 stream = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
+editor/display_folded = true
 position = Vector2( 90, 136 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 4 )
@@ -88,5 +89,7 @@ anims/default = SubResource( 2 )
 [node name="FourFour" type="AudioStreamPlayer" parent="LoopsAt60BPM"]
 
 [node name="Timeline" type="AudioStreamPlayer" parent="."]
+
+[node name="BeatsPlaying" type="Node" parent="."]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="first_press_timer" to="." method="_on_first_press_timer_timeout"]

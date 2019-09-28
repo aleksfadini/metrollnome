@@ -1,5 +1,7 @@
 extends Node2D
 
+# debug mode
+var debug_mode = true
 # Tap Tempo System
 var time_elapsed = 0
 var button_presses = 0
@@ -18,7 +20,7 @@ var OtherBeat
 var blacklist = []
 # Latency System
 var max_latency_buffer = 1000 # in ms (should be added before each sound)
-var look_ahead = 80 # in ms
+var look_ahead = 40 # in ms
 var beat_already_played = false
 # this is a temp var that keeps track of when 
 # the last beat was detected, used as a flag to avoid repeating
@@ -65,7 +67,7 @@ func check_timeline():
 		beat_already_played = true
 		#set the buffer delayed to use as reference
 		last_beat_buffer_delay = ms_from_beat
-		print("last_beat_buffer_delay: ", last_beat_buffer_delay) 
+		print("last_beat_buffer_delay: ", last_beat_buffer_delay)
 	
 # detect bpm on button pressed
 func _on_Button_pressed():
@@ -105,10 +107,12 @@ func play_with_delay(delay):
 	reset_beat_counter_each_bar()
 	if beat_counter == 0:
 		#play beat 1
-		FirstBeat.play(1-delay_in_secs)
+#		FirstBeat.play(1-delay_in_secs)
+		PlayBeat("first",1-delay_in_secs)
 	else:
 		#play beat non-1 (different sound)
-		OtherBeat.play(1-delay_in_secs)
+		PlayBeat("other",1-delay_in_secs)
+#		OtherBeat.play(1-delay_in_secs)
 
 		
 func reset_beat_counter_each_bar():
@@ -137,14 +141,26 @@ func bpm_to_beat_in_ms(any_bpm):
 	return int(beat_in_ms)
 	
 ## temptative workaround
-func PlaySound_Node(var stype, var node, var volume = 1.0):
-    assert (node != null)
-    var player = AudioStreamPlayer.new()
-    node.add_child(player)
-    player.stream = StreamFromSType(stype)
-    player.set_max_db(-60 + (volume * 60.0))
-    player.connect("finished", player, "queue_free")
-    player.play()
+func PlayBeat(type_of_beat="first", delay_time="0"):
+	var player = AudioStreamPlayer.new()
+	$BeatsPlaying.add_child(player)
+	var audio_sample 
+	if type_of_beat == "first":
+		if not debug_mode:
+			audio_sample =load("res://Sound/PFirstBeat.ogg")
+			audio_sample.set_loop(false)
+		# if in debug mode, make all beats sound the same
+		else:
+			audio_sample =load("res://Sound/POtherBeat.ogg")		
+			audio_sample.set_loop(false)
+		player.stream = audio_sample
+	if type_of_beat == "other":
+		audio_sample =load("res://Sound/POtherBeat.ogg")		
+		audio_sample.set_loop(false)
+		player.stream = audio_sample
+#	player.set_max_db(-60 + (volume * 60.0))
+	player.connect("finished", player, "queue_free")
+	player.play(delay_time)
 
 #################################################33333
 ############### EFFECTS SECTION
