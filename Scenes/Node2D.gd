@@ -18,7 +18,7 @@ var OtherBeat
 var blacklist = []
 # Latency System
 var max_latency_buffer = 1000 # in ms (should be added before each sound)
-var look_ahead = 50 # in ms
+var look_ahead = 30 # in ms
 var beat_already_played = false
 # this is a temp var that keeps track of when 
 # the last beat was detected, used as a flag to avoid repeating
@@ -51,7 +51,7 @@ func check_timeline():
 	# find how close this frame is to the next beat
 #	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
 	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
-	print("GT: ",ms_from_beat)
+#	print("GT: ",ms_from_beat)
 	# check if beat has already been played
 	if ms_from_beat <= last_beat_buffer_delay:
 #		beat_already_played = true
@@ -95,14 +95,6 @@ func _on_first_press_timer_timeout():
 	first_press = true
 	print("RESET!")
 
-#func _on_sound_event_timer_timeout():
-#	$sound_event_timer.wait_time = float(bpm)/(60*60)
-
-#func play_sound():
-#	$AudioStreamPlayer.play()
-	
-
-	
 # This function keeps triggering one beat after 
 # the other.
 func play_with_delay(delay):
@@ -146,7 +138,7 @@ func bpm_to_beat_in_ms(any_bpm):
 	
 
 #################################################33333
-############### TROLLING SECTION
+############### EFFECTS SECTION
 ###################################
 
 # Insert random events here

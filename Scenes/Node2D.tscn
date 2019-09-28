@@ -65,7 +65,7 @@ align = 1
 valign = 1
 
 [node name="first_press_timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.0
 one_shot = true
 
 [node name="FirstBeat" type="AudioStreamPlayer" parent="."]
@@ -73,8 +73,6 @@ stream = SubResource( 1 )
 
 [node name="OtherBeat" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-
-[node name="sound_event_timer" type="Timer" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 90, 136 )
@@ -92,4 +90,3 @@ anims/default = SubResource( 2 )
 [node name="Timeline" type="AudioStreamPlayer" parent="."]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="first_press_timer" to="." method="_on_first_press_timer_timeout"]
-[connection signal="timeout" from="sound_event_timer" to="." method="_on_sound_event_timer_timeout"]
