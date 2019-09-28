@@ -6,6 +6,7 @@ var button_presses = 0
 var bpm = 120
 var first_press = true
 var counter = 0
+var beat_in_ms = 0
 # Bar and beat counters
 var bar_counter = 0
 var beat_counter = 0
@@ -25,7 +26,9 @@ var beat_already_played = false
 var last_beat_buffer_delay = 0
 
 func _ready():
+	# initialize starting bpm
 	$bpm.text = str(bpm)
+	beat_in_ms = bpm_to_beat_in_ms(bpm)
 #	set_physics_process_internal(true)
 #	Loop_4_4 = $LopsAt60BPM/FourFour
 	FirstBeat = $FirstBeat
@@ -60,18 +63,9 @@ func _process(delta):
 	check_thresholds()
 
 func check_timeline():
-	# find beat in ms (should be moved to where the bpm is updated)
-	var beat_in_ms = bpm_to_beat_in_ms(bpm)
 	# find how close this frame is to the next beat
 	var ms_from_beat = beat_in_ms-(OS.get_ticks_msec()% beat_in_ms)
 #	print("GT: ",ms_from_beat)
-	# check if beat has already been played
-	if ms_from_beat <= last_beat_buffer_delay:
-#		beat_already_played = true
-		pass
-	else:
-		beat_already_played = false
-		last_beat_buffer_delay = look_ahead
 	# if closer than look_ahead and not already played, play with delay
 	if ms_from_beat < look_ahead and not beat_already_played:
 		beat_already_played = true
@@ -79,7 +73,13 @@ func check_timeline():
 		#set the buffer delayed to use as reference
 		last_beat_buffer_delay = ms_from_beat
 		print("last_beat_buffer_delay: ", last_beat_buffer_delay) 
+	# check if beat has already been played
+	if ms_from_beat <= last_beat_buffer_delay:
+#		beat_already_played = true
 		pass
+	else:
+		beat_already_played = false
+		last_beat_buffer_delay = look_ahead
     # do something every 300ms
 	pass
 # Insert random events here
@@ -101,6 +101,8 @@ func _on_Button_pressed():
 		bpm = 60*button_presses/time_elapsed
 		get_node("Sprite/AnimationPlayer").playback_speed = (bpm/120)
 		$bpm.text = "BPM: " + str(bpm)
+		# find beat in ms (should be moved to where the bpm is updated)
+	beat_in_ms = bpm_to_beat_in_ms(bpm)
 		# morph beat 1
 #		morph_beat_loop_to_given_bpm(FirstBeat,bpm)
 		# morph beat 2
