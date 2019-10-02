@@ -13,7 +13,7 @@ var beat_in_ms = 0
 var bar_counter = 1 # the first bar is called "1"
 var beat_counter = 0
 var beats_per_bar = 4
-#Loops
+#Loops	
 var FirstBeat
 var OtherBeat
 # Events
